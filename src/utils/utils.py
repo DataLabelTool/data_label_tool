@@ -1,10 +1,30 @@
 import numpy as np
 import json
-
+import re
 import time
 import random
 import logging
 from datetime import datetime
+
+
+def formaturl(url):
+    if not re.match("(?:http|ftp|https)://", url):
+        return f"http://{url}"
+    return url
+
+
+def image_to_stream(image: np.ndarray, mode: str = None):
+    from PIL import Image
+    import io
+    if mode is None:
+        mode = "RGB"
+    img = Image.fromarray(image)
+    img = img.convert(mode)
+
+    buffered = io.BytesIO()
+    img.save(buffered, format="PNG")
+
+    return buffered.getvalue()
 
 
 def create_filename():
