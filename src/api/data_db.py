@@ -119,20 +119,122 @@ class DataDBAPI:
         except Exception as e:
             return False
 
-    def image_data_get_classes(self, db_name: str):
-        pass
+    def image_data_get_classes(self, db_name: str) -> List:
+        """get classes"""
+        assert self.authorized, "Unauthorized"
+        link = f"{self.host}/classes"
 
-    def image_data_set_classes(self, db_name: str, classes: dict):
-        pass
+        try:
+            response = requests.get(
+                url=link,
+                params={"db_name": db_name},
+                headers={'Authorization': f"Bearer {self.access_token}"},
+                timeout=self.timeout
+            )
+            if response.status_code == 200:
+                params = response.json()
+                return params.get('data', [])
+            else:
+                print(response.status_code, response.content)
+                return []
+        except Exception as e:
+            return []
 
-    def image_data_get_image_data(self, db_name: str, task_name: str, id: str = None):
-        pass
+    def image_data_set_classes(self, db_name: str, classes: dict) -> List:
+        assert self.authorized, "Unauthorized"
+        link = f"{self.host}/classes"
+
+        try:
+            response = requests.post(
+                url=link,
+                params={"db_name": db_name},
+                json=classes,
+                headers={'Authorization': f"Bearer {self.access_token}"},
+                timeout=self.timeout
+            )
+            if response.status_code == 200:
+                params = response.json()
+                return params.get('data', [])
+            else:
+                print(response.status_code, response.content)
+                return []
+        except Exception as e:
+            return []
+
+    def image_data_get_image_data(self, db_name: str, task_name: str, id: str = None) -> List:
+        assert self.authorized, "Unauthorized"
+        link = f"{self.host}/image_data"
+        try:
+            params = {
+                "db_name": db_name,
+                "task_name": task_name
+            }
+            if id is not None:
+                params["id"] = id
+            response = requests.get(
+                url=link,
+                params=params,
+                headers={'Authorization': f"Bearer {self.access_token}"},
+                timeout=self.timeout
+            )
+            if response.status_code == 200:
+                params = response.json()
+                return params.get('data', [])
+            else:
+                print(response.status_code, response.content)
+                return []
+        except Exception as e:
+            return []
 
     def image_data_post_image_data(self, db_name: str, task_name: str, image_data: dict, id: str = None):
-        pass
+        assert self.authorized, "Unauthorized"
+        link = f"{self.host}/image_data"
+        try:
+            params = {
+                "db_name": db_name,
+                "task_name": task_name
+            }
+            if id is not None:
+                params["id"] = id
+            response = requests.post(
+                url=link,
+                json=image_data,
+                params=params,
+                headers={'Authorization': f"Bearer {self.access_token}"},
+                timeout=self.timeout
+            )
+            if response.status_code == 200:
+                params = response.json()
+                return params.get('data', [])
+            else:
+                print(response.status_code, response.content)
+                return []
+        except Exception as e:
+            return []
 
     def image_data_delete_image_data(self, db_name: str, task_name: str, id: str):
-        pass
+        assert self.authorized, "Unauthorized"
+        link = f"{self.host}/image_data"
+        try:
+            params = {
+                "db_name": db_name,
+                "task_name": task_name,
+                "id": id
+            }
+            response = requests.delete(
+                url=link,
+                params=params,
+                headers={'Authorization': f"Bearer {self.access_token}"},
+                timeout=self.timeout
+            )
+            if response.status_code == 200:
+                params = response.json()
+                return params.get('data', [])
+            else:
+                print(response.status_code, response.content)
+                return []
+        except Exception as e:
+            return []
 
     def image_data_get_tasks(self) -> List[Dict]:
         """get tasks"""
