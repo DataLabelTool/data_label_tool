@@ -16,14 +16,14 @@ class DataStoreAPI:
 
     def __init__(
             self,
-            host: str = 'localhost',
+            hostname: str = 'localhost',
             username: str = None,
             password: str = None,
             access_token: str = None,
             update_token_in_thread: bool = True,
             token_expire_time: int = 3600
     ):
-        self.host = formaturl(host)
+        self.hostname = formaturl(hostname)
         self.timeout = 3
         self.access_token = access_token
         self.username = username
@@ -33,7 +33,7 @@ class DataStoreAPI:
         self.authorized = False
 
     def check(self) -> bool:
-        link = f"{self.host}/docs"
+        link = f"{self.hostname}/docs"
         try:
             response = requests.get(
                 url=link,
@@ -61,7 +61,7 @@ class DataStoreAPI:
         ).start()
 
     def users_get_me(self) -> Dict:
-        link = f"{self.host}/users/me"
+        link = f"{self.hostname}/users/me"
         try:
             response = requests.get(
                 url=link,
@@ -77,10 +77,10 @@ class DataStoreAPI:
             return {}
 
     def auth_login(self, username: str, password: str) -> bool:
-        self.username = username
-        self.password = password
+        self.username = username if username is not None else self.username
+        self.password = password if password is not None else self.password
 
-        link = f"{self.host}/auth/jwt/login"
+        link = f"{self.hostname}/auth/jwt/login"
         data = {
             "username": self.username,
             "password": self.password
@@ -104,7 +104,7 @@ class DataStoreAPI:
             return False
 
     def auth_refresh(self) -> bool:
-        link = f"{self.host}/auth/jwt/refresh"
+        link = f"{self.hostname}/auth/jwt/refresh"
 
         try:
             response = requests.post(
@@ -125,7 +125,7 @@ class DataStoreAPI:
 
     def store_post_array(self, image: np.ndarray) -> Union[List[str], None]:
         assert self.authorized, "Unauthorized"
-        link = f"{self.host}/store"
+        link = f"{self.hostname}/store"
 
         try:
             files = {"files": image_to_stream(image=image)}
@@ -147,7 +147,7 @@ class DataStoreAPI:
 
     def store_post_file(self, path: str) -> Union[List[str], None]:
         assert self.authorized, "Unauthorized"
-        link = f"{self.host}/store"
+        link = f"{self.hostname}/store"
         try:
 
             path = Path(path)
@@ -174,7 +174,7 @@ class DataStoreAPI:
 
     def store_delete(self, url: str) -> bool:
         assert self.authorized, "Unauthorized"
-        link = f"{self.host}/store"
+        link = f"{self.hostname}/store"
 
         try:
             response = requests.delete(

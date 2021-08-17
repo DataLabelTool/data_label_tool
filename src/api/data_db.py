@@ -12,14 +12,14 @@ class DataDBAPI:
 
     def __init__(
             self,
-            host: str = 'localhost',
+            hostname: str = 'localhost',
             username: str = None,
             password: str = None,
             access_token: str = None,
             update_token_in_thread: bool = True,
             token_expire_time: int = 3600
     ):
-        self.host = formaturl(host)
+        self.hostname = formaturl(hostname)
         self.timeout = 3
         self.access_token = access_token
         self.username = username
@@ -29,7 +29,7 @@ class DataDBAPI:
         self.authorized = False
 
     def check(self) -> bool:
-        link = f"{self.host}/docs"
+        link = f"{self.hostname}/docs"
         try:
             response = requests.get(
                 url=link,
@@ -57,7 +57,7 @@ class DataDBAPI:
         ).start()
 
     def users_get_me(self) -> Dict:
-        link = f"{self.host}/users/me"
+        link = f"{self.hostname}/users/me"
         try:
             response = requests.get(
                 url=link,
@@ -72,11 +72,11 @@ class DataDBAPI:
         except Exception as e:
             return {}
 
-    def auth_login(self, username: str, password: str) -> bool:
-        self.username = username
-        self.password = password
+    def auth_login(self, username: str = None, password: str = None) -> bool:
+        self.username = username if username is not None else self.username
+        self.password = password if password is not None else self.password
 
-        link = f"{self.host}/auth/jwt/login"
+        link = f"{self.hostname}/auth/jwt/login"
         data = {
             "username": self.username,
             "password": self.password
@@ -100,7 +100,7 @@ class DataDBAPI:
             return False
 
     def auth_refresh(self) -> bool:
-        link = f"{self.host}/auth/jwt/refresh"
+        link = f"{self.hostname}/auth/jwt/refresh"
 
         try:
             response = requests.post(
@@ -122,7 +122,7 @@ class DataDBAPI:
     def image_data_get_classes(self, db_name: str) -> List:
         """get classes"""
         assert self.authorized, "Unauthorized"
-        link = f"{self.host}/classes"
+        link = f"{self.hostname}/classes"
 
         try:
             response = requests.get(
@@ -142,7 +142,7 @@ class DataDBAPI:
 
     def image_data_set_classes(self, db_name: str, classes: dict) -> List:
         assert self.authorized, "Unauthorized"
-        link = f"{self.host}/classes"
+        link = f"{self.hostname}/classes"
 
         try:
             response = requests.post(
@@ -163,7 +163,7 @@ class DataDBAPI:
 
     def image_data_get_image_data(self, db_name: str, task_name: str, id: str = None) -> List:
         assert self.authorized, "Unauthorized"
-        link = f"{self.host}/image_data"
+        link = f"{self.hostname}/image_data"
         try:
             params = {
                 "db_name": db_name,
@@ -188,7 +188,7 @@ class DataDBAPI:
 
     def image_data_post_image_data(self, db_name: str, task_name: str, image_data: dict, id: str = None):
         assert self.authorized, "Unauthorized"
-        link = f"{self.host}/image_data"
+        link = f"{self.hostname}/image_data"
         try:
             params = {
                 "db_name": db_name,
@@ -214,7 +214,7 @@ class DataDBAPI:
 
     def image_data_delete_image_data(self, db_name: str, task_name: str, id: str):
         assert self.authorized, "Unauthorized"
-        link = f"{self.host}/image_data"
+        link = f"{self.hostname}/image_data"
         try:
             params = {
                 "db_name": db_name,
@@ -239,7 +239,7 @@ class DataDBAPI:
     def image_data_get_tasks(self) -> List[Dict]:
         """get tasks"""
         assert self.authorized, "Unauthorized"
-        link = f"{self.host}/tasks"
+        link = f"{self.hostname}/tasks"
 
         try:
             response = requests.get(
@@ -259,7 +259,7 @@ class DataDBAPI:
     def image_data_post_tasks(self, db_name: str, task_name: str) -> bool:
         """create new task"""
         assert self.authorized, "Unauthorized"
-        link = f"{self.host}/tasks"
+        link = f"{self.hostname}/tasks"
 
         try:
             params = {
@@ -283,7 +283,7 @@ class DataDBAPI:
 
     def image_data_delete_tasks(self, db_name: str, task_name: str) -> bool:
         assert self.authorized, "Unauthorized"
-        link = f"{self.host}/tasks"
+        link = f"{self.hostname}/tasks"
 
         try:
             params = {
@@ -307,7 +307,7 @@ class DataDBAPI:
 
     def image_data_add_dbs(self, db_name: str) -> bool:
         assert self.authorized, "Unauthorized"
-        link = f"{self.host}/dbs"
+        link = f"{self.hostname}/dbs"
 
         try:
             params = {
@@ -330,7 +330,7 @@ class DataDBAPI:
 
     def image_data_delete_dbs(self, db_name: str) -> bool:
         assert self.authorized, "Unauthorized"
-        link = f"{self.host}/dbs"
+        link = f"{self.hostname}/dbs"
 
         try:
             params = {
