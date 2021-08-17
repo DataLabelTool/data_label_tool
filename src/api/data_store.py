@@ -2,10 +2,9 @@ from pathlib import Path
 import threading
 import requests
 import numpy as np
+import logging
 from typing import Dict, List, Union
 from src.utils.utils import formaturl, image_to_stream
-
-
 
 
 class DataStoreAPI:
@@ -44,6 +43,7 @@ class DataStoreAPI:
             else:
                 return False
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.check(): \n {e}")
             return False
 
     def update_token_thread(self):
@@ -74,6 +74,7 @@ class DataStoreAPI:
             else:
                 return {}
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.users_get_me(): \n {e}")
             return {}
 
     def auth_login(self, username: str, password: str) -> bool:
@@ -101,6 +102,7 @@ class DataStoreAPI:
             else:
                 return False
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.auth_login(): \n {e}")
             return False
 
     def auth_refresh(self) -> bool:
@@ -121,6 +123,7 @@ class DataStoreAPI:
                 print(response.status_code, response.content)
                 return False
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.auth_refresh(): \n {e}")
             return False
 
     def store_post_array(self, image: np.ndarray) -> Union[List[str], None]:
@@ -143,6 +146,7 @@ class DataStoreAPI:
                 print(response.status_code, response.content)
                 return None
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.store_post_array(): \n {e}")
             return None
 
     def store_post_file(self, path: str) -> Union[List[str], None]:
@@ -170,6 +174,7 @@ class DataStoreAPI:
                 print(response.status_code, response.content)
                 return None
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.store_post_file(): \n {e}")
             return None
 
     def store_delete(self, url: str) -> bool:
@@ -191,4 +196,5 @@ class DataStoreAPI:
                 print(response.status_code, response.content)
                 return False
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.store_delete(): \n {e}")
             return False

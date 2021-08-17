@@ -1,5 +1,6 @@
 import threading
 import requests
+import logging
 from typing import Dict, List
 from src.utils.utils import formaturl
 
@@ -38,8 +39,11 @@ class DataDBAPI:
             if response.status_code == 200:
                 return True
             else:
+                logging.error(f"{self.__module__}.{self.__class__.__name__}.check(): \n "
+                              f"{response.status_code}, {response.content}")
                 return False
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.check(): \n {e}")
             return False
 
     def update_token_thread(self):
@@ -68,8 +72,11 @@ class DataDBAPI:
                 params = response.json()
                 return params
             else:
+                logging.error(f"{self.__module__}.{self.__class__.__name__}.users_get_me(): \n "
+                              f"{response.status_code}, {response.content}")
                 return {}
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.users_get_me(): \n {e}")
             return {}
 
     def auth_login(self, username: str = None, password: str = None) -> bool:
@@ -95,8 +102,11 @@ class DataDBAPI:
                 self.authorized = True
                 return True
             else:
+                logging.error(f"{self.__module__}.{self.__class__.__name__}.auth_login(): \n "
+                              f"{response.status_code}, {response.content}")
                 return False
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.auth_login(): \n {e}")
             return False
 
     def auth_refresh(self) -> bool:
@@ -114,9 +124,11 @@ class DataDBAPI:
                 self.authorized = True
                 return True
             else:
-                print(response.status_code, response.content)
+                logging.error(f"{self.__module__}.{self.__class__.__name__}.auth_refresh(): \n "
+                              f"{response.status_code}, {response.content}")
                 return False
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.auth_refresh(): \n {e}")
             return False
 
     def image_data_get_classes(self, db_name: str) -> List:
@@ -135,9 +147,11 @@ class DataDBAPI:
                 params = response.json()
                 return params.get('data', [])
             else:
-                print(response.status_code, response.content)
+                logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_get_classes(): \n "
+                              f"{response.status_code}, {response.content}")
                 return []
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_get_classes(): \n {e}")
             return []
 
     def image_data_set_classes(self, db_name: str, classes: dict) -> List:
@@ -156,9 +170,11 @@ class DataDBAPI:
                 params = response.json()
                 return params.get('data', [])
             else:
-                print(response.status_code, response.content)
+                logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_set_classes(): \n "
+                              f"{response.status_code}, {response.content}")
                 return []
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_set_classes(): \n {e}")
             return []
 
     def image_data_get_image_data(self, db_name: str, task_name: str, id: str = None) -> List:
@@ -181,9 +197,11 @@ class DataDBAPI:
                 params = response.json()
                 return params.get('data', [])
             else:
-                print(response.status_code, response.content)
+                logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_get_image_data(): \n "
+                              f"{response.status_code}, {response.content}")
                 return []
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_get_image_data(): \n {e}")
             return []
 
     def image_data_post_image_data(self, db_name: str, task_name: str, image_data: dict, id: str = None):
@@ -207,9 +225,11 @@ class DataDBAPI:
                 params = response.json()
                 return params.get('data', [])
             else:
-                print(response.status_code, response.content)
+                logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_post_image_data(): \n "
+                              f"{response.status_code}, {response.content}")
                 return []
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_post_image_data(): \n {e}")
             return []
 
     def image_data_delete_image_data(self, db_name: str, task_name: str, id: str):
@@ -231,9 +251,11 @@ class DataDBAPI:
                 params = response.json()
                 return params.get('data', [])
             else:
-                print(response.status_code, response.content)
+                logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_delete_image_data(): \n "
+                              f"{response.status_code}, {response.content}")
                 return []
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_delete_image_data(): \n {e}")
             return []
 
     def image_data_get_tasks(self) -> List[Dict]:
@@ -251,9 +273,11 @@ class DataDBAPI:
                 params = response.json()
                 return params.get('data', [])
             else:
-                print(response.status_code, response.content)
+                logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_get_tasks(): \n "
+                              f"{response.status_code}, {response.content}")
                 return []
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_get_tasks(): \n {e}")
             return []
 
     def image_data_post_tasks(self, db_name: str, task_name: str) -> bool:
@@ -276,9 +300,11 @@ class DataDBAPI:
                 params = response.json()
                 return params.get('data', False)
             else:
-                print(response.status_code, response.content)
+                logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_post_tasks(): \n "
+                              f"{response.status_code}, {response.content}")
                 return False
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_post_tasks(): \n {e}")
             return False
 
     def image_data_delete_tasks(self, db_name: str, task_name: str) -> bool:
@@ -300,9 +326,11 @@ class DataDBAPI:
                 params = response.json()
                 return params.get('data', False)
             else:
-                print(response.status_code, response.content)
+                logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_delete_tasks(): \n "
+                              f"{response.status_code}, {response.content}")
                 return False
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_delete_tasks(): \n {e}")
             return False
 
     def image_data_add_dbs(self, db_name: str) -> bool:
@@ -323,9 +351,11 @@ class DataDBAPI:
                 params = response.json()
                 return params.get('data', False)
             else:
-                print(response.status_code, response.content)
+                logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_add_dbs(): \n "
+                              f"{response.status_code}, {response.content}")
                 return False
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_add_dbs(): \n {e}")
             return False
 
     def image_data_delete_dbs(self, db_name: str) -> bool:
@@ -349,4 +379,5 @@ class DataDBAPI:
                 print(response.status_code, response.content)
                 return False
         except Exception as e:
+            logging.error(f"{self.__module__}.{self.__class__.__name__}.image_data_delete_dbs(): \n {e}")
             return False
